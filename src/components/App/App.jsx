@@ -11,21 +11,15 @@ function App() {
 
   const dispatch = useDispatch();
 
+  //TODO - delete me
   const fetchBookList = () => {
-    axios.get('/books')
-      .then(response => {
-        // Send to reducer
-        dispatch({ type: 'SET_BOOK_LIST', payload: response.data });
-      })
-      .catch( error => {
-        alert(`Sorry. Things aren't working at the moment. Try again later`);
-        console.log('Error getting books', error);
-      })
+    
   }
 
   // GET Book List from server as we load
   useEffect(()=> {
-    fetchBookList();
+    // TODO - REPLEACT THIS FUNCTION a DISPATCHING ACTION
+    dispatch({type:`FETCH_BOOKS`});
   }, [])
   
 

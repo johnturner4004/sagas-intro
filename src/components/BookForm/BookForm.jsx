@@ -1,10 +1,13 @@
 import axios from 'axios';
 import {useState} from 'react';
+import {useDispatch} from 'react-redux';
 
-function BookForm( {fetchBookList} ) {
+function BookForm() {
   
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
+
+  const dispatch = useDispatch();
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -12,18 +15,7 @@ function BookForm( {fetchBookList} ) {
     console.log(`Adding book`, {title, author});
 
     // TODO - axios request to server to add book
-    axios.post('/books', {
-      title: title, author: author
-    })
-      .then( response => {
-        console.log('added book successfully');
-        // GET the books from the server again
-        fetchBookList();
-      })
-      .catch( error => {
-        alert(`Sorry. Things aren't working at the moment. Try again later`);
-        console.log('Error adding book', error);
-      })
+   dispatch({ type: 'ADD_BOOK', payload: { title: title, author:author}})
   };
 
   return (
