@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux'; 
 import logger from 'redux-logger';
 // Bring in new middleware for sagas. WOOT!
@@ -12,6 +12,7 @@ import './index.css';
 
 import App from './components/App/App';
 import * as serviceWorker from './serviceWorker';
+import rootReducer from'./redux/reducers/_reet.reducer'
 
 // ----------------- Sagas ----------------------- //
 
@@ -24,17 +25,7 @@ function* fetchBooks() {
   } catch (error) {
     alert('Sorry. Things aren\'t working at the moment. Try again later');
     console.log('Error getting books', error);
-    
   }
-  // axios.get('/books')
-  //     .then(response => {
-  //       // Send to reducer
-  //       dispatch({ type: 'SET_BOOK_LIST', payload: response.data });
-  //     })
-  //     .catch( error => {
-  //       alert(`Sorry. Things aren't working at the moment. Try again later`);
-  //       console.log('Error getting books', error);
-  //     })
 }
 
 function* addBook( action ) {
@@ -44,20 +35,7 @@ function* addBook( action ) {
   } catch (error) {
     alert(`Sorry. Things aren't working at the moment. Try again later `);
     console.log(`Error getting books`, error);
-    
   }
-  // axios.post('/books', {
-  //   title: title, author: author
-  // })
-  //   .then( response => {
-  //     console.log('added book successfully');
-  //     // GET the books from the server again
-  //     fetchBookList();
-  //   })
-  //   .catch( error => {
-  //     alert(`Sorry. Things aren't working at the moment. Try again later`);
-  //     console.log('Error adding book', error);
-  //   })
 }
 
 // Saga Setup 1 - creat the saga middleware
@@ -73,21 +51,9 @@ function* watcherSaga() {
 
 
 // ------------- Reducers -------------- //
-const bookList = (state=[], action) => {
-  // TODO - set book list with data from server
-  if (action.type === 'SET_BOOK_LIST') {
-    // The action payload is a new array from the server 
-    // It has ALL the information in it - no need to spread 
-    // & add to previous state
-    return action.payload;
-  }
-  return state;
-}
-
 const reduxStore = createStore(
-  combineReducers({
-    bookList
-  }),
+  //imported root reducer
+  rootReducer,
   //Saga Setup 4 - add it to the redux middlewaare
   applyMiddleware(logger, sagaMiddleware)
 );
