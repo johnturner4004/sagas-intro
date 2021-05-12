@@ -13,41 +13,16 @@ import './index.css';
 import App from './components/App/App';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from'./redux/reducers/_reet.reducer'
+import rootSaga from './redux/sagas/_root.saga'
 
 // ----------------- Sagas ----------------------- //
 
-function* fetchBooks() {
-  try {
-    //yield make us wait until the async thing (azios)is done)
-    //keep the response in a variable to access later
-    const response = yield axios.get('/books');
-    yield put( { type: 'SET_BOOK_LIST', payload: response.data } );
-  } catch (error) {
-    alert('Sorry. Things aren\'t working at the moment. Try again later');
-    console.log('Error getting books', error);
-  }
-}
 
-function* addBook( action ) {
-  try {
-    yield axios.post('/books', action.payload);
-    yield put ({type: 'FETCH_BOOKS'});
-  } catch (error) {
-    alert(`Sorry. Things aren't working at the moment. Try again later `);
-    console.log(`Error getting books`, error);
-  }
-}
+
+
 
 // Saga Setup 1 - creat the saga middleware
 const sagaMiddleware = createSagaMiddleware();
-
-//Saga Setup 2 - make the watcher function - name is a tack
-// * makes this a "generator function"
-function* watcherSaga() {
-  yield takeEvery('FETCH_BOOKS', fetchBooks);
-  yield takeEvery('ADD_BOOK', addBook)
-}
-
 
 
 // ------------- Reducers -------------- //
@@ -59,7 +34,7 @@ const reduxStore = createStore(
 );
 
 //Saga Setup 3 - make the watcherSaga run
-sagaMiddleware.run( watcherSaga);
+sagaMiddleware.run( rootSaga );
 
 ReactDOM.render(<Provider store={reduxStore}><App /></Provider>, document.getElementById('root'));
 
